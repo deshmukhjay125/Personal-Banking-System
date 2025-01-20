@@ -1,0 +1,138 @@
+## Instructions:
+
+# 1. *Balance Checking*:
+#    - The user should be able to view their current balance.
+#    - Initially, the account starts with a balance of $1000.00.
+
+# 2. *Deposit Functionality*:
+#    - The user should be able to deposit money into the account.
+#    - Ensure that only valid amounts are accepted (positive numbers).
+#    - After a successful deposit, the updated balance should be displayed.
+
+# 3. *Withdrawal Functionality*:
+#    - The user should be able to withdraw money.
+#    - The system should check that the withdrawal amount does not exceed the current balance.
+#    - Only valid, positive amounts should be allowed.
+#    - After the withdrawal, the new balance should be displayed.
+
+# 4. *Transaction History*:
+#    - The user should be able to view the last five transactions they made.
+#    - Transactions can either be deposits or withdrawals, and should be displayed in the order they were made.
+
+# 5. *Exiting the System*:
+#    - Provide an option to exit the system.
+
+
+class BankAccount:
+    def __init__(self, name, mob_no, password, balance=1000):
+        self.name = name
+        self.mob_no = mob_no
+        self.password = password
+        self.balance = balance
+        self.transactions = []
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.balance += amount
+            self.transactions.append(f"Deposited: ${amount:.2f}")
+            print(f"Deposit successful! New balance: ${self.balance:.2f}")
+        else:
+            print("Invalid deposit amount. Please enter a positive number.")
+
+    def withdraw(self, amount):
+        if amount > 0:
+            if amount <= self.balance:
+                self.balance -= amount
+                self.transactions.append(f"Withdrew: ${amount:.2f}")
+                print(f"Withdrawal successful! New balance: ${self.balance:.2f}")
+            else:
+                print("Insufficient funds. Withdrawal amount exceeds current balance.")
+        else:
+            print("Invalid withdrawal amount. Please enter a positive number.")
+
+    def view_transactions(self):
+        print("Last 5 Transactions:")
+        for transaction in self.transactions[-5:]:
+            print(transaction)
+
+    def view_balance(self):
+        print(f"Your current balance is: ${self.balance:.2f}")
+
+    def exit_system(self):
+        print("Exiting the system. Thank you for using our service!")
+        exit(0)
+
+
+def create_account():
+    name = input("Please enter your name: ")
+    mob_no = input("Please enter your mobile number: ")
+
+    while True:
+        print(
+            "Password Rules:\n\t1. At least 6 characters\n\t2. At least one number\n\t3. At least one uppercase character")
+        password = input("Please enter a password: ")
+        if len(password) < 6:
+            print("Password must be at least 6 characters long.")
+            continue
+        if not any(char.isdigit() for char in password):
+            print("Password must contain at least one number.")
+            continue
+        if not any(char.isupper() for char in password):
+            print("Password must contain at least one uppercase character.")
+            continue
+        break
+
+    print("Password created successfully!")
+    return BankAccount(name, mob_no, password)
+
+
+def main():
+    print("Welcome to the bank")
+    account = None
+
+    while True:
+        print("\n\n--- WELCOME TO BANK ---")
+        print("1. Create Account")
+        print("2. Deposit Amount")
+        print("3. Withdraw Amount")
+        print("4. Balance Checking")
+        print("5. Transaction History")
+        print("6. Exit the System")
+
+        user_input = input("Please enter your option: ")
+
+        if user_input == '1':
+            account = create_account()
+        elif user_input == '2':
+            if account:
+                amount = float(input("Enter amount to deposit: "))
+                account.deposit(amount)
+            else:
+                print("Please create an account first.")
+        elif user_input == '3':
+            if account:
+                amount = float(input("Enter amount to withdraw: "))
+                account.withdraw(amount)
+            else:
+                print("Please create an account first.")
+        elif user_input == '4':
+            if account:
+                account.view_balance()
+            else:
+                print("Please create an account first.")
+        elif user_input == '5':
+            if account:
+                account.view_transactions()
+            else:
+                print("Please create an account first.")
+        elif user_input == '6':
+            if account:
+                account.exit_system()
+            else:
+                print("Please create an account first.")
+        else:
+            print("Invalid option. Please try again.")
+
+
+if __name__ == "__main__":
+    main()
