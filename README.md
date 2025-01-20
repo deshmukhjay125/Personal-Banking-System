@@ -9,4 +9,5 @@ Deposit and withdraw funds.
 View last five transactions.
 User-friendly interface with secure password setup.
 
-View project code and details in
+View project code and details in Personal Banking System.
+
